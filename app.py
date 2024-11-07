@@ -218,7 +218,7 @@ st.write(f'Information on posts of MP {politician} between {start} and {end}')
 show = ['name','party', 'date', 'likes', 'comments', 'video_views', 'comment', 'webpage'] #,'shortcode'
 
 if politician is None:
-    st.write('Please choose a politician in the options sidebar.'
+    st.write('Please choose a politician in the options sidebar.')
 else:
     # write the dataframe according to choosen politicians
     df2=pd.DataFrame(columns=show)   # empty df for concatenating
