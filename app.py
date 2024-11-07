@@ -10,8 +10,7 @@ pd.options.display.max_colwidth = None
 # load variables
 # check if already there
 if 'posts' not in st.session_state:    # only do if session_state.posts is not there
-    st.write('newly loaded')
-    
+    # st.write('newly loaded')
     # load info 
     infos_show = pd.read_csv('Data/infos_show.csv')
     infos_show = infos_show.drop('Unnamed: 0', axis = 1)
