@@ -7,7 +7,6 @@ pd.options.display.max_colwidth = None
 # ********************************************************************************
 # **************  load the files  ***************************************
 
-    
 # load variables
 # check if already there
 if 'posts' not in st.session_state:    # only do if session_state.posts is not there
@@ -43,12 +42,8 @@ if 'posts' not in st.session_state:    # only do if session_state.posts is not t
     st.session_state.infos = infos_show
     #st.session_state.elections = elections
 
-  
-
-
-
 # ********************************************************************************
-#***** Create a sidebar for options ************************* 
+# ***** Create a sidebar for options ************************* 
 # Sidebar options
 st.sidebar.header("Options")
 
@@ -83,8 +78,11 @@ with st.sidebar:
     elif politician is None:
         st.write('')
         # make a mask with every entry = True
-        for i in range(0,len(st.session_state.posts)):
-            mask_pol.append(st.session_state.posts[i]['name'] == st.session_state.posts[i]['name'])
+        # for i in range(0,len(st.session_state.posts)):
+        #   mask_pol.append(st.session_state.posts[i]['name'] == st.session_state.posts[i]['name'])
+    elif politician is '':
+        st.write('')
+        politician = None
     elif politician not in list(st.session_state.infos['name']):
         st.write('You have a typo!')
 
@@ -111,29 +109,21 @@ with st.sidebar:
 # Title
 st.title('PostParliament')
 st.markdown('''
-The database covers the following information:
-* Who?
-
-    All politicians (MPs) of the current german parliament who have an account on instagram
-* What?
+The database covers all posts of politicians (MPs) of the current german parliament who have an
+instagram account on instagram between 2020 and 10/2024. The app is made for you to explore the
+posting behavior and you can choose the party, one specific MP and the timespan in the options
+sidebar. Go explore!
 
      **Infos about accounts**
     - The name, the account name and the party of the MP
-    - How many followers, and overall posts
+    - How many followers
 
      **Infos on posts** 
-    - the date
-    - how many likes the post got
-    - how many comments the post got
+    - the date, number of posts,
+    - how many likes/and comments the post got
     - how many views the video has (if the media type is a reel)
     - what caption the MP wrote
     - a link to the instagram post
-
-* What can you change?
-    - which parties to include
-    - choose one politician or keep all 
-    - select the time span covered
-
 ''')
 
 #***** Page 1: Posting Behaviour ************
@@ -214,12 +204,12 @@ st.dataframe(aggregate_party)
 st.markdown('''
 ## Posts of MPs
 ''')
-st.write(f'Information on posts of MP {politician} between {start} and {end}')
-show = ['name','party', 'date', 'likes', 'comments', 'video_views', 'comment', 'webpage'] #,'shortcode'
 
 if politician is None:
     st.write('Please choose a politician in the options sidebar.')
 else:
+    st.write(f'Information on posts of MP {politician} between {start} and {end}')
+    show = ['name','party', 'date', 'likes', 'comments', 'video_views', 'comment', 'webpage'] 
     # write the dataframe according to choosen politicians
     df2=pd.DataFrame(columns=show)   # empty df for concatenating
     with warnings.catch_warnings():       # supress the warning with pd.concat
@@ -248,7 +238,7 @@ else:
     if 'All' in what:
         what = ['likes', 'comments', 'video_views']
         
-    st.write(f'Average {what} from politician {politician} between {start} and {end}')
+    st.write(f'Average {str(what).replace('[','').replace(']','').replace("'","")} from politician {politician} between {start} and {end}')
     
     timeagg = df2.resample('ME', on='date')[what].mean().reset_index()
     st.line_chart(data = timeagg, x = 'date', y = what)
