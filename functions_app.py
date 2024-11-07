@@ -17,12 +17,12 @@ def make_pie_2(df,col,titles):
         return f"{pct:.1f}%\n({absolute})"             # Return as percentage and count
         
     # First Pie Chart
-    axes[0].pie(df[col[0]], labels=list(df.index), autopct='%1.1f%%')
+    axes[0].pie(df[col[0]], labels=list(df['party']), autopct='%1.1f%%')
     axes[0].set_title(titles[0])
     
     # Second Pie Chart - Example with another column or different data
     # Replace 'another_column' with the appropriate column from your DataFrame
-    axes[1].pie(df[col[1]], labels=list(df.index),autopct='%1.1f%%')
+    axes[1].pie(df[col[1]], labels=list(df['party']),autopct='%1.1f%%')
     axes[1].set_title(titles[1])
     
     # Display the plots
