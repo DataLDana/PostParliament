@@ -124,6 +124,7 @@ sidebar. Go explore!
     - how many views the video has (if the media type is a reel)
     - what caption the MP wrote
     - a link to the instagram post
+    
 ''')
 
 #***** Page 1: Posting Behaviour ************
