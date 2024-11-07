@@ -70,7 +70,7 @@ with st.sidebar:
     # Text area
     mask_pol =[]
     politician = st.text_input(label='Choose a politician to be analyzed and hit Enter',
-                              value=None, placeholder= 'Enter one politican here as stated in the tables')
+                              value=None, placeholder= 'Name as stated in tables')
     if politician in list(st.session_state.infos['name']):
         st.write(f'You entered: {politician}')
         for i in range(0,len(st.session_state.posts)):
