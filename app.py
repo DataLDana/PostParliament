@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import warnings
-import seaborn as sns
-import matplotlib.pyplot as plt
 from functions_app import *
 pd.options.display.max_colwidth = None
 
