@@ -11,10 +11,10 @@ pd.options.display.max_colwidth = None
 # load variables
 # check if already there
 if 'posts' not in st.session_state:    # only do if session_state.posts is not there
+    st.write('newly loaded')
     
     # load info 
     infos_show = pd.read_csv('Data/infos_show.csv')
-    
     infos_show = infos_show.drop('Unnamed: 0', axis = 1)
 
     ## load election results
@@ -217,38 +217,40 @@ st.markdown('''
 st.write(f'Information on posts of MP {politician} between {start} and {end}')
 show = ['name','party', 'date', 'likes', 'comments', 'video_views', 'comment', 'webpage'] #,'shortcode'
 
-# write the dataframe according to choosen politicians
-df2=pd.DataFrame(columns=show)   # empty df for concatenating
-
-with warnings.catch_warnings():       # supress the warning with pd.concat
-    warnings.simplefilter("ignore")
-    for i in range(0,len(st.session_state.posts)):    # loop all chunks
-        df = st.session_state.posts[i].loc[(mask_pol[i]) & (mask_date[i])] # write a df with only masked 
-        df2=pd.concat([df2, df],axis=0)      # concatenate from all dfs
-
-# show the dataframe with url to click on 
-st.data_editor(
-    df2,
-    column_config={
-        'webpage': st.column_config.LinkColumn(
-            'Content',
-            validate=r'^https?://[^\s]+$',
-            display_text='Show Content',  # Display only the domain or customize
-            max_chars=50,
-        ),
-    },
-    hide_index=True,
-)
-
-#***** Page 2: Posting Behaviour ************   2) show time plot
-what = st.radio('Select one metric to plot:', ['likes', 'comments',
-                                               'video_views', 'All'])
-if 'All' in what:
-    what = ['likes', 'comments', 'video_views']
+if politician is None:
+    st.write('Please choose a politician in the options sidebar.'
+else:
+    # write the dataframe according to choosen politicians
+    df2=pd.DataFrame(columns=show)   # empty df for concatenating
+    with warnings.catch_warnings():       # supress the warning with pd.concat
+        warnings.simplefilter("ignore")
+        for i in range(0,len(st.session_state.posts)):    # loop all chunks
+            df = st.session_state.posts[i].loc[(mask_pol[i]) & (mask_date[i])] # write a df with only masked 
+            df2=pd.concat([df2, df],axis=0)      # concatenate from all dfs
     
-st.write(f'Average {what} from politician {politician} between {start} and {end}')
-
-timeagg = df2.resample('ME', on='date')[what].mean().reset_index()
-st.line_chart(data = timeagg, x = 'date', y = what)
+    # show the dataframe with url to click on 
+    st.data_editor(
+        df2,
+        column_config={
+            'webpage': st.column_config.LinkColumn(
+                'Content',
+                validate=r'^https?://[^\s]+$',
+                display_text='Show Content',  # Display only the domain or customize
+                max_chars=50,
+            ),
+        },
+        hide_index=True,
+    )
+    
+    #***** Page 2: Posting Behaviour ************   2) show time plot
+    what = st.radio('Select one metric to plot:', ['likes', 'comments',
+                                                   'video_views', 'All'])
+    if 'All' in what:
+        what = ['likes', 'comments', 'video_views']
+        
+    st.write(f'Average {what} from politician {politician} between {start} and {end}')
+    
+    timeagg = df2.resample('ME', on='date')[what].mean().reset_index()
+    st.line_chart(data = timeagg, x = 'date', y = what)
 
 #st.map(map_data)
