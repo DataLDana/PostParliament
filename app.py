@@ -69,18 +69,18 @@ with st.sidebar:
     # selection of a politician
     # Text area
     mask_pol =[]
-    politician = st.text_input(label='Choose a politician to be analyzed and hit Enter',
+    politician = st.text_input(label='Choose a politician to be analyzed and hit enter\nYou need this for the "Posts of MPs" section.',
                               value=None, placeholder= 'Name as stated in tables')
     if politician in list(st.session_state.infos['name']):
         st.write(f'You entered: {politician}')
         for i in range(0,len(st.session_state.posts)):
             mask_pol.append(st.session_state.posts[i]['name'] == politician)
     elif politician is None:
-        st.write('')
+        st.write('You entered:')
         # make a mask with every entry = True
         # for i in range(0,len(st.session_state.posts)):
         #   mask_pol.append(st.session_state.posts[i]['name'] == st.session_state.posts[i]['name'])
-    elif politician is '':
+    elif politician == '':
         st.write('')
         politician = None
     elif politician not in list(st.session_state.infos['name']):
@@ -96,7 +96,7 @@ with st.sidebar:
         options=[date.strftime('%Y-%m') for date in pd.date_range(start='2020-01', end='2024-10', freq='MS')],
         value=('2020-01', '2024-10'),
         )
-    st.write("You selected month between", start, "and", end)
+    st.write("You selected months between", start, "and", end)
     
     # Create mask
     mask_date =[]
@@ -109,22 +109,22 @@ with st.sidebar:
 # Title
 st.title('PostParliament')
 st.markdown('''
-The database covers all posts of politicians (MPs) of the current german parliament who have an
-instagram account on instagram between 2020 and 10/2024. The app is made for you to explore the
-posting behavior and you can choose the party, one specific MP and the timespan in the options
-sidebar. Go explore!
+The database covers all posts (between 2020 and 10/2024) of politicians (MPs) of the current 
+german parliament who have an instagram account. The app is made for you to explore the posting
+behavior: compare parties, choose one specific MP, see the timeline and adjust the timespan.
+Go explore!
 
-     **Infos about accounts**
+     Infos about accounts
     - The name, the account name and the party of the MP
     - How many followers
 
-     **Infos on posts** 
+     Infos on posts 
     - the date, number of posts,
     - how many likes/and comments the post got
     - how many views the video has (if the media type is a reel)
-    - what caption the MP wrote
-    - a link to the instagram post
-    
+    - the caption under the post and a link to the instagram post
+
+Please note that party representation is based on the results of the most recent election.
 ''')
 
 #***** Page 1: Posting Behaviour ************
@@ -164,11 +164,6 @@ infos = st.session_state.infos.loc[mask_parties,['name', 'account', 'party',
 # show post_cnt/likes/comments per party and per person
 merge_pol= infos.merge(aggregate_pol, on='name')
 
-#st.write('show info table:')
-#st.dataframe(infos)
-#st.write('show posts aggregate:')
-#st.dataframe(aggregate_pol)
-
 # Show Dataframe 
 st.write('Infos about politicians:')
 st.dataframe(merge_pol)
@@ -207,7 +202,7 @@ st.markdown('''
 ''')
 
 if politician is None:
-    st.write('Please choose a politician in the options sidebar.')
+    st.write('Please choose a politician in the options sidebar to see this section.')
 else:
     st.write(f'Information on posts of MP {politician} between {start} and {end}')
     show = ['name','party', 'date', 'likes', 'comments', 'video_views', 'comment', 'webpage'] 
