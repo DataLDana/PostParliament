@@ -41,3 +41,18 @@ RESULTS: **elections**, **accounts_final**, **infos_final**, **posts_all**,
      of the Instagram URL
    - the posts are split into smaller data frames with only 30000 rows, as this is supposed
      to improve the performance of the web application **post_chunks{i}.csv**
+
+# The web application
+The web application is made in Python code using the library Streamlit, which turns Python code into 
+web apps without the need of front-end experience. Steamlit uses the code saved in GitHub and 
+automatically deploys the app. The file **app.py** in the main folder is the main file for the app.
+**functions_app.py** defines functions and  **requirements.txt** the requirements for the app. The app.py
+loads the database, which is given in the folder Data. Note, that the .streamlit folder is 
+necessary to allow files >200mb in the Streamlit app. 
+
+# Planned Updates
+Unfortunately, due to the large file database, the app breaks down sometimes, although the performance
+improved due to the steps taken. The next update includes:
+- further troubleshooting with the large database
+- further analysis: comparing election results to posting behavior
+- adding sentiment APIS: analyzing the tone of posts and see if certain posts are more successful
